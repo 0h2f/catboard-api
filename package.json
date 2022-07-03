@@ -1,0 +1,25 @@
+{
+  "name": "imageboard",
+  "version": "0.0.1",
+  "description": "A booru like imageboard written in nodejs",
+  "main": "bin/server.js",
+  "bin": {
+    "imageboard": "bin/server.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Aisakaxyz",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "debug": "^4.3.4",
+    "express": "^4.18.1",
+    "http": "^0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.4.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.18"
+  }
+}
