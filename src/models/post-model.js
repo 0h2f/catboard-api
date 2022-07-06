@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-    number,
+    number: {
+        type: Number,
+        index: { unique: true }
+    },
     source: {
         type: String,
         trim: true
@@ -41,35 +44,27 @@ const schema = new Schema({
     }]
 });
 
-Schema.pre('save', function (next) {
+/*TODO a better way to serialize the post number field*/
+
+/*>>i dont want to create a new table to just do that,
+even if this is the most correct method<<*/
+
+/*this function is here more to be a placeholder
+ than anything, because this method isnt reliable.
+
+>stackoverflow.com/a/41690744
+ */
+
+schema.pre('save', function (next) {
     var number = 1;
     var post = this;
     post.find({}, (err, posts) => {
         if (err) throw err;
-        number = post.length + 1;
+        number = posts.length + 1;
         post.number = number;
         next();
     });
 
 });
-/*
-userSchema.pre('save', function(next) {
-    var currentDate = new Date();
-    this.updated_at = currentDate;
-
-    if (!this.created_at)
-        this.created_at = currentDate;
-
-    var sno = 1;
-    var user = this;
-    User.find({}, function(err, users) {
-    if (err) throw err;
-        sno = users.length + 1;
-        user.sno = sno;
-        next();
-    });
-});
-*/
-
 
 module.exports = mongoose.model('Post', schema);

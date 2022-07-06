@@ -6,15 +6,15 @@ const config = require('./config');
 const app = express();
 const router = express.Router();
 
-// Connect to database
 mongoose.connect(config.connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
 
-// Load the models
 const userModel = require('./models/user-model');
+const postModel = require('./models/post-model');
+const tagModel = require('./models/tag-model');
 
-// Load the routes
 const indexRoute = require('./routes/index-route');
 const userRoute = require('./routes/user-route');
+const postRoute = require('./routes/post-route');
 
 app.use(bodyParser.json({ limit: "20mb" }));
 app.use(bodyParser.urlencoded({ limit: "20mb", extended: true, parameterLimit: 20000 }));
@@ -29,5 +29,6 @@ app.use(function (req, res, next) {
 
 app.use('/', indexRoute);
 app.use('/users/', userRoute);
+app.use('/posts/', postRoute)
 
 module.exports = app;

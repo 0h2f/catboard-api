@@ -1,11 +1,8 @@
 const service = require('../services/user-service')
 
 /*TODO a sane method to handle errors.*/
-/*Error handling must be in user-services 
-and validation on user-controller (i guess?)*/
 
 exports.post = async (req, res, next) => {
-
     try {
         await service.register({
             username: req.body.username,
