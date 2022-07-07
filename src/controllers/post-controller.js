@@ -68,7 +68,7 @@ exports.post = async (req, res, next) => {
 
 exports.put = async (req, res, next) => {
     try {
-        await service.update(req.params.id, {
+        await service.put(req.params.id, {
             source: req.body.source,
             image: req.body.image,
             imageInfo: req.body.imageInfo,
@@ -80,6 +80,7 @@ exports.put = async (req, res, next) => {
         });
 
     } catch (e) {
+        console.log(e);
         res.status(500).send({
             message: "Failed to process your request"
         });

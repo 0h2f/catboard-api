@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const schema = new Schema({
     number: {
         type: Number,
-        index: { unique: true }
+        index: { unique: true },
+        default: 69024
     },
     source: {
         type: String,
@@ -56,12 +57,14 @@ even if this is the most correct method<<*/
  */
 
 schema.pre('save', function (next) {
-    var number = 1;
-    var post = this;
-    post.find({}, (err, posts) => {
+    let number = 1;
+    let Post = this.constructor;
+
+    Post.find({}, (err, posts) => {
         if (err) throw err;
+
         number = posts.length + 1;
-        post.number = number;
+        this.number = number;
         next();
     });
 

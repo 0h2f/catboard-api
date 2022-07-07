@@ -40,7 +40,7 @@ exports.create = async (data) => {
     await post.save();
 }
 
-exports.update = async (id, data) => {
+exports.update = async function (id, data) {
     await Post
         .findByIdAndUpdate(id, {
             $set: {
