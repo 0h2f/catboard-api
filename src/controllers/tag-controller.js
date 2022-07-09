@@ -1,4 +1,4 @@
-const service = require('../services/post-service');
+const service = require('../services/tag-service');
 
 exports.get = async (req, res, next) => {
     try {
@@ -12,20 +12,21 @@ exports.get = async (req, res, next) => {
     }
 }
 
-exports.getByNumber = async (req, res, next) => {
+exports.getByName = async (req, res, next) => {
     try {
-        let data = await service.getByNumber(req.params.number);
+        let data = await service.getByName(req.params.name);
         res.status(200).send(data);
     } catch (e) {
+        console.log(e);
         res.status(500).send({
             message: "Failed to process your request"
         });
     }
 }
 
-exports.getByTag = async (req, res, next) => {
+exports.getByCategory = async (req, res, next) => {
     try {
-        let data = await service.getByTag(req.params.tag);
+        let data = await service.getByCategory(req.params.category);
         res.status(200).send(data);
     } catch (e) {
         res.status(500).send({
@@ -49,13 +50,13 @@ exports.post = async (req, res, next) => {
 
     try {
         await service.post({
-            source: req.body.source,
-            tags: req.body.tags,
-            rawImage: req.body.image
+            name: req.body.name,
+            description: req.body.description,
+            category: req.body.category
         });
 
         res.status(201).send({
-            message: "Post registered successfully!"
+            message: "Tag registered successfully!"
         });
 
     } catch (e) {
@@ -68,14 +69,13 @@ exports.post = async (req, res, next) => {
 exports.put = async (req, res, next) => {
     try {
         await service.put(req.params.id, {
-            source: req.body.source,
-            image: req.body.image,
-            imageInfo: req.body.imageInfo,
-            tags: req.body.tags
+            name: req.body.name,
+            description: req.body.description,
+            category: req.body.category
         });
 
         res.status(201).send({
-            message: 'Post updated successfully!'
+            message: 'Tag updated successfully!'
         });
 
     } catch (e) {
@@ -90,7 +90,7 @@ exports.delete = async (req, res, next) => {
     try {
         await service.delete(req.body.id);
         res.status(201).send({
-            message: 'Post removed successfully!'
+            message: 'Tag removed successfully!'
         });
 
     } catch (e) {

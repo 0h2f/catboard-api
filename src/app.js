@@ -15,6 +15,7 @@ const tagModel = require('./models/tag-model');
 const indexRoute = require('./routes/index-route');
 const userRoute = require('./routes/user-route');
 const postRoute = require('./routes/post-route');
+const tagRoute = require('./routes/tag-route');
 
 app.use(bodyParser.json({ limit: "20mb" }));
 app.use(bodyParser.urlencoded({ limit: "20mb", extended: true, parameterLimit: 20000 }));
@@ -30,5 +31,6 @@ app.use(function (req, res, next) {
 app.use('/', indexRoute);
 app.use('/users/', userRoute);
 app.use('/posts/', postRoute)
+app.use('/tags/', tagRoute)
 
 module.exports = app;

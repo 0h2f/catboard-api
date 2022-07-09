@@ -21,8 +21,7 @@ exports.getByNumber = async (number) => {
 exports.getByTag = async (tag) => {
     const res = await Post
         .find({
-            tags: tag,
-            active: true
+            tags: tag
         }, 'number image tags');
 
     return res;

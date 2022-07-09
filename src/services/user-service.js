@@ -12,7 +12,7 @@ exports.register = async ({ username, password }) => {
 exports.authenticate = async ({ username, password }) => {
 
     let user = await repository.getByUsername(username);
-    let isPwdValid = await user.isPwdValid(password, this.password);
+    let isPwdValid = await user.isPwdValid(password);
     if (user && isPwdValid) {
         let data = {
             id: user._id,
