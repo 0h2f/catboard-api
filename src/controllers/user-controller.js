@@ -1,4 +1,5 @@
 const service = require('../services/user-service')
+const userConDebug = require('debug')('nodeimageboard:user-controller')
 
 /*TODO a sane method to handle errors.*/
 
@@ -13,8 +14,9 @@ exports.post = async (req, res, next) => {
             message: "User registered successfully!"
         });
 
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        debug(error);
+
         res.status(500).send({
             message: "Failed to process your request"
         });
@@ -46,8 +48,9 @@ exports.authenticate = async (req, res, next) => {
             }
         });
 
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        debug(error);
+
         res.status(500).send({
             message: "Failed to process your request"
         });
@@ -77,8 +80,9 @@ exports.refreshAccessToken = async (req, res, next) => {
             }
         });
 
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        debug(error);
+
         res.status(500).send({
             message: "Failed to process your request"
         });

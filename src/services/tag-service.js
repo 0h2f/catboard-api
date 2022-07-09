@@ -1,4 +1,5 @@
 const repository = require('../repositories/tag-repository');
+const authHelper = require('../helpers/auth-helper');
 
 exports.get = async () => {
     return await repository.get();
@@ -24,10 +25,13 @@ exports.delete = async (id) => {
     await repository.delete(id);
 }
 
-exports.post = async ({ name, description, category }) => {
+exports.post = async ({ accessToken, data: { name, description, category } }) => {
+    let user = await authHelper.decodeAccessToken(accessToken);
+
     await repository.create({
         name: name,
         description: description,
-        category: category
+        category: category,
+        author: user.id
     });
 }

@@ -42,7 +42,12 @@ const schema = new Schema({
     tags: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Tag'
-    }]
+    }],
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }
 });
 
 /*TODO a better way to serialize the post number field*/

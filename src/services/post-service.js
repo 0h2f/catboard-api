@@ -2,6 +2,7 @@ const repository = require('../repositories/post-repository');
 const config = require('../config');
 const uuid = require('uuid');
 const storageHelper = require('../helpers/storage-helper');
+const { decodeAccessToken } = require('../helpers/auth-helper');
 
 exports.get = async () => {
     return await repository.get();
@@ -31,7 +32,8 @@ exports.delete = async (id) => {
 the container is safe, bc on php im basically building 
 a backdoor on my server doing this, even if the container is 
 isolated of the server. Php is weird...*/
-exports.post = async ({ source, tags, rawImage }) => {
+exports.post = async ({ accessToken, data: { source, tags, rawImage } }) => {
+    let user = decodeAccessToken(accessToken);
 
     let matches = rawImage.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
     let rawType = matches[1];
@@ -44,10 +46,12 @@ exports.post = async ({ source, tags, rawImage }) => {
         blobBuffer: buffer
     });
 
+
     await repository.create({
         source: source,
         image: image,
         imageInfo: rawType,
-        tags: tags
+        tags: tags,
+        author: user.id
     });
 }
