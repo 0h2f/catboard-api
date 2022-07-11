@@ -50,12 +50,12 @@ const schema = new Schema({
     }
 });
 
-/*TODO a better way to serialize the post number field*/
+/*TODO: a better way to serialize the post number field*/
 
-/*>>i dont want to create a new table to just do that,
-even if this is the most correct method<<*/
+/*NOTE:
+i dont want to create a new table to just do that,
+even if this is the most correct method.
 
-/*
 this function is here more to be a placeholder than anything,
 because this method isnt reliable (breaks if any document is 
 deleted :] ). 
@@ -76,5 +76,9 @@ schema.pre('save', function (next) {
     });
 
 });
+
+schema.methods.isAuthor = async function (userId) {
+    return this.author.toString() === userId;
+}
 
 module.exports = mongoose.model('Post', schema);

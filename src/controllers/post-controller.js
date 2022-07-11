@@ -1,5 +1,5 @@
 const service = require('../services/post-service');
-const postConDebug = require('debug')('nodeimageboard:post-controller')
+const debug = require('debug')('nodeimageboard:post-controller')
 
 exports.get = async (req, res, next) => {
     try {
@@ -82,7 +82,9 @@ exports.post = async (req, res, next) => {
 }
 exports.put = async (req, res, next) => {
     try {
-        await service.put(req.params.id, {
+        let accessToken = req.body.token || req.query.token || req.headers['x-access-token'];
+
+        await service.put(accessToken, req.params.id, {
             source: req.body.source,
             image: req.body.image,
             imageInfo: req.body.imageInfo,
@@ -104,7 +106,9 @@ exports.put = async (req, res, next) => {
 
 exports.delete = async (req, res, next) => {
     try {
-        await service.delete(req.body.id);
+        let accessToken = req.body.token || req.query.token || req.headers['x-access-token'];
+
+        await service.delete(accessToken, req.body.id);
         res.status(201).send({
             message: 'Post removed successfully!'
         });

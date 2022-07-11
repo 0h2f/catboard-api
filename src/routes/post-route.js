@@ -9,7 +9,7 @@ router.get('/tags/:tag', controller.getByTag);
 router.get('/id/:id', authHelper.authenticateToken, controller.getById);
 
 router.post('/', authHelper.authenticateToken, controller.post);
-router.put('/:id', authHelper.authenticateAdminToken, controller.put);
-router.delete('/', authHelper.authenticateAdminToken, controller.delete);
+router.put('/:id', authHelper.authenticateToken, controller.put);
+router.delete('/', authHelper.authenticateToken, controller.delete);
 
 module.exports = router

@@ -10,8 +10,8 @@ const blobServiceClient = new BlobServiceClient(
     sharedKeyCredential
 );
 
-//TODO a sane error handler
-// print error to console, refuses to elaborate, continues as if nothing happened :/
+//TODO: a sane error handler
+//NOTE: print error to console, refuses to elaborate, continues as if nothing happened :/
 
 exports.uploadBlockBlob = async (containerName, { blobName, blobBuffer }) => {
     try {

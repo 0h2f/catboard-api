@@ -36,4 +36,9 @@ const schema = new Schema({
     }
 });
 
+schema.methods.isAuthor = async function (userId) {
+    return this.author.toString() === userId;
+}
+
+
 module.exports = mongoose.model('Tag', schema);

@@ -1,6 +1,6 @@
 const http = require('http');
 const app = require('../src/app');
-const debug = require('debug')('nodeimgboard:server');
+const debug = require('debug')('nodeimageboard:server');
 
 const port = normalizePort(process.env.PORT | '3000');
 app.set(port);

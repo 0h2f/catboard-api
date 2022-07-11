@@ -1,5 +1,5 @@
 const service = require('../services/tag-service');
-const tagConDebug = require('debug')('nodeimageboard:tag-controller')
+const debug = require('debug')('nodeimageboard:tag-controller')
 
 exports.get = async (req, res, next) => {
     try {
@@ -73,7 +73,6 @@ exports.post = async (req, res, next) => {
 
     } catch (error) {
         debug(error);
-
         res.status(500).send({
             message: "Failed to process your request"
         });
@@ -82,7 +81,9 @@ exports.post = async (req, res, next) => {
 }
 exports.put = async (req, res, next) => {
     try {
-        await service.put(req.params.id, {
+        let accessToken = req.body.token || req.query.token || req.headers['x-access-token'];
+
+        await service.put(accessToken, req.params.id, {
             name: req.body.name,
             description: req.body.description,
             category: req.body.category
@@ -103,7 +104,9 @@ exports.put = async (req, res, next) => {
 
 exports.delete = async (req, res, next) => {
     try {
-        await service.delete(req.body.id);
+        let accessToken = req.body.token || req.query.token || req.headers['x-access-token'];
+
+        await service.delete(accessToken, req.body.id);
         res.status(201).send({
             message: 'Tag removed successfully!'
         });

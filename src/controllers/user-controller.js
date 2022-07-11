@@ -1,7 +1,29 @@
 const service = require('../services/user-service')
-const userConDebug = require('debug')('nodeimageboard:user-controller')
+const debug = require('debug')('nodeimageboard:user-controller')
 
-/*TODO a sane method to handle errors.*/
+/*TODO: a sane method to handle errors.*/
+/*NOTE:
+something like this, i throw this error on services 
+myErrorHdl.httpError(
+    status_code: 500, 
+    status_name: "SERVER_ERROR", 
+    message: "Actually, this is a server error :] "
+);
+or even
+myErrorHdl.http500Error(message: "Something isnt right :(")
+
+and at controllers i do a catch and send the message to the user
+catch (err){
+    if err is myErrorHdl.httpError
+        res.status(err.status_code).send({
+            status_name: err.status_name,
+            message: err.message
+        });
+    else
+        stop the server and call the police;
+}
+*/
+
 
 exports.post = async (req, res, next) => {
     try {
