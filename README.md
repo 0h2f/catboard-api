@@ -1,1 +1,1 @@
-An image board API written in node.js, except this isn't working at the moment so it's barely an API
+An image board API written in node.js
