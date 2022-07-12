@@ -83,11 +83,7 @@ exports.put = async (req, res, next) => {
     try {
         let accessToken = req.body.token || req.query.token || req.headers['x-access-token'];
 
-        await service.put(accessToken, req.params.id, {
-            name: req.body.name,
-            description: req.body.description,
-            category: req.body.category
-        });
+        await service.put(accessToken, req.params.id, req.body);
 
         res.status(201).send({
             message: 'Tag updated successfully!'

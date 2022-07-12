@@ -20,7 +20,7 @@ exports.getById = async (id) => {
     return await repository.getById(id);
 }
 
-exports.put = async (token, postId, data) => {
+exports.put = async (token, postId, body) => {
     let postDocument = await repository.getById(postId);
     let user = await authHelper.decodeAccessToken(token);
     let isAuthor = await postDocument.isAuthor(user.id);
@@ -28,7 +28,22 @@ exports.put = async (token, postId, data) => {
     if (!isAuthor)
         throw new Error("User is not the author");
 
-    await repository.update(postId, data);
+    let putData = { $set: {} };
+
+    let editableParams = {
+        source: "source",
+        image: "image",
+        imageInfo: "imageInfo",
+        tags: "tags"
+    }
+
+    Object.keys(body).forEach((key) => {
+        if (editableParams[key])
+            putData.$set[key] = body[key];
+
+    });
+
+    await repository.update(postId, putData);
 }
 
 exports.delete = async (token, postId) => {

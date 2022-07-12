@@ -28,9 +28,7 @@ exports.getByTag = async (tag) => {
 }
 
 exports.getById = async (id) => {
-    const res = await Post
-        .findById(id);
-
+    const res = await Post.findById(id);
     return res;
 }
 
@@ -41,14 +39,9 @@ exports.create = async (data) => {
 
 exports.update = async function (id, data) {
     await Post
-        .findByIdAndUpdate(id, {
-            $set: {
-                source: data.source,
-                image: data.image,
-                imageInfo: data.imageInfo,
-                tags: data.tags
-            }
-        });
+        .findByIdAndUpdate(
+            id, data, { runValidators: true }
+        );
 }
 
 exports.delete = async (id) => {

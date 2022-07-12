@@ -42,14 +42,9 @@ exports.create = async (data) => {
 
 exports.update = async function (id, data) {
     await Tag
-        .findByIdAndUpdate(id, {
-            $set: {
-                name: data.name,
-                description: data.description,
-                category: data.category,
-                lastUpdate: Date.now()
-            }
-        });
+        .findByIdAndUpdate(
+            id, data, { runValidators: true }
+        );
 }
 
 exports.delete = async (id) => {
