@@ -3,6 +3,7 @@ const config = require('../config');
 const uuid = require('uuid');
 const storageHelper = require('../helpers/storage-helper');
 const authHelper = require('../helpers/auth-helper');
+const httpError = require('../helpers/error-handler/error-handler');
 
 exports.get = async () => {
     return await repository.get();
@@ -26,7 +27,8 @@ exports.put = async (token, postId, body) => {
     let isAuthor = await postDocument.isAuthor(user.id);
 
     if (!isAuthor)
-        throw new Error("User is not the author");
+        //throw new Error("User is not the author");
+        throw new httpError.forbidden("User is not the author");
 
     let putData = { $set: {} };
 
@@ -52,7 +54,8 @@ exports.delete = async (token, postId) => {
     let isAuthor = await postDocument.isAuthor(user.id);
 
     if (!isAuthor)
-        throw new Error("User is not the author");
+        throw new httpError.forbidden("User is not the author");
+    //throw new Error("User is not the author");
 
     await repository.delete(postId);
 }

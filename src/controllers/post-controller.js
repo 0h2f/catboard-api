@@ -73,13 +73,16 @@ exports.post = async (req, res, next) => {
 
     } catch (error) {
         debug(error);
-
+        next(error);
+        /*
         res.status(500).send({
             message: "Failed to process your request"
         });
 
+    */
     }
 }
+
 exports.put = async (req, res, next) => {
     try {
         let accessToken = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -109,11 +112,7 @@ exports.delete = async (req, res, next) => {
         });
 
     } catch (error) {
-
         debug(error);
-        res.status(500).send({
-            message: "Failed to process your request"
-        });
-
+        next(error)
     }
 };

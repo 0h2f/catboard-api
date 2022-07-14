@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const config = require('./config');
+const { errorHandler, httpStatusCode } = require('./helpers/error-handler/error-handler');
 
 const app = express();
 const router = express.Router();
@@ -32,5 +33,21 @@ app.use('/', indexRoute);
 app.use('/users/', userRoute);
 app.use('/posts/', postRoute)
 app.use('/tags/', tagRoute)
+
+app.use((err, req, res, next) => {
+    if (errorHandler.isTrustedError(err)) {
+        errorHandler.logError(err);
+        errorHandler.handleError(err, res, next);
+    }
+    else {
+        errorHandler.logError(err);
+        res.status(httpStatusCode.INTERNAL_SERVER)
+            .send({
+                message: "Internal server error"
+            });
+        // process.exit(1);
+    }
+
+});
 
 module.exports = app;
