@@ -7,6 +7,7 @@ const { errorHandler, httpStatusCode } = require('./helpers/error-handler/error-
 const app = express();
 const router = express.Router();
 
+mongoose.set('strictQuery', true)
 mongoose.connect(config.connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const userModel = require('./models/user-model');
@@ -36,7 +37,7 @@ app.use('/tags/', tagRoute)
 
 app.use((err, req, res, next) => {
     if (errorHandler.isTrustedError(err)) {
-        errorHandler.logError(err);
+        errorHandler.logTrace(err);
         errorHandler.handleError(err, res, next);
     }
     else {

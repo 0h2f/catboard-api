@@ -76,9 +76,8 @@ exports.post = async ({ accessToken, data: { source, tags, rawImage } }) => {
 
     let image = await storageHelper.uploadBlockBlob('sample', {
         blobName: filename,
-        blobBuffer: buffer
+       blobBuffer: buffer
     });
-
 
     await repository.create({
         source: source,

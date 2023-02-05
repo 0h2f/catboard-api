@@ -4,7 +4,8 @@ const Post = mongoose.model('Post');
 exports.get = async () => {
     const res = await Post
         .find({
-        }, 'number image tags');
+        }, '-_id number image tags')
+        .populate('tags', '-_id name category');
 
     return res;
 }
@@ -13,7 +14,8 @@ exports.getByNumber = async (number) => {
     const res = await Post
         .findOne({
             number: number
-        });
+        }, '-_id -__v')
+        .populate('tags', '-_id');
 
     return res;
 }

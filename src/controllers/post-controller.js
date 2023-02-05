@@ -30,7 +30,7 @@ exports.getByNumber = async (req, res, next) => {
 
 exports.getByTag = async (req, res, next) => {
     try {
-        let data = await service.getByTag(req.params.tag);
+        let data = await service.getByTag(req.body.tag);
         res.status(200).send(data);
     } catch (error) {
         debug(error);

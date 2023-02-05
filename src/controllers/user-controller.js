@@ -48,7 +48,6 @@ exports.post = async (req, res, next) => {
 
 exports.authenticate = async (req, res, next) => {
     try {
-
         let token = await service.authenticate({
             username: req.body.username,
             password: req.body.password

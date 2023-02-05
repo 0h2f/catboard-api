@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const AutoInc = require("./auto-increment-id");
 
 const schema = new Schema({
     number: {
@@ -64,17 +65,12 @@ deleted :] ).
  */
 
 schema.pre('save', function (next) {
-    let number = 1;
-    let Post = this.constructor;
-
-    Post.find({}, (err, posts) => {
-        if (err) throw err;
-
-        number = posts.length + 1;
-        this.number = number;
-        next();
+    let Postpre = this;
+    AutoInc.findOneAndUpdate({id: 'postId'}, {$inc: {value: 1}}, (err, autoincId) => {
+        if(err) return next(err);
+        Postpre.number = autoincId.value;
+        next()
     });
-
 });
 
 schema.methods.isAuthor = async function (userId) {

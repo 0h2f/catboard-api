@@ -36,6 +36,18 @@ class badRequest extends httpError {
     }
 }
 
+class unauthorized extends httpError {
+    constructor(description, isOperational = true) {
+
+        super('UNAUTHORIZED', httpStatusCode.UNAUTHORIZED, description, isOperational);
+
+        Object.setPrototypeOf(this, new.target.prototype);
+
+        Error.captureStackTrace(this);
+    }
+}
+
+
 class forbidden extends httpError {
     constructor(description, isOperational = true) {
 
@@ -74,12 +86,10 @@ class ErrorHandler {
         res.status(err.httpCode).send({
             message: err.message
         });
-
-
     }
 
-    async logError(err) {
-        await logger.error(
+    async logTrace(err) {
+        await logger.trace(
             'Error message from the error handler: \n',
             err
         );
@@ -96,6 +106,7 @@ class ErrorHandler {
 const httpStatusCode = {
     OK: 200,
     BAD_REQUEST: 400,
+    UNAUTHORIZED: 401, 
     FORBIDDEN: 403,
     NOT_FOUND: 404,
     INTERNAL_SERVER: 500
@@ -107,6 +118,7 @@ module.exports = {
     baseError,
     httpError,
     badRequest,
+    unauthorized,
     forbidden,
     notFound,
     internalServer,

@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config');
+const httpError = require('../helpers/error-handler/error-handler');
 
 exports.generateAccessToken = async (data) => {
     return jwt.sign(data, config.TOKEN_SECRET, { expiresIn: '1d' });
@@ -13,18 +14,14 @@ exports.authenticateToken = function (req, res, next) {
     let token = req.body.token || req.query.token || req.headers['x-access-token'];
 
     if (!token) {
-        res.status(401).json({
-            message: "This request requires user authentication"
-        });
+        throw new httpError.unauthorized("This request requires user authentication");
     }
 
     try {
         jwt.verify(token, config.TOKEN_SECRET);
         next();
     } catch (error) {
-        res.status(403).json({
-            message: "Invalid token"
-        });
+        throw new httpError.badRequest("Invalid token");
     }
 }
 
@@ -32,9 +29,7 @@ exports.authenticateAdminToken = (req, res, next) => {
     let token = req.body.token || req.query.token || req.headers['x-access-token'];
 
     if (!token) {
-        res.status(401).json({
-            message: "This request requires user authentication"
-        });
+        throw new httpError.unauthorized("This request requires user authentication");
     }
 
     try {
@@ -43,13 +38,9 @@ exports.authenticateAdminToken = (req, res, next) => {
         if (tokenData.roles.includes('admin')) {
             next();
         } else {
-            res.status(403).json({
-                message: "This request requires administrator privillegies"
-            })
+            throw new httpError.unauthorized("This request requires administrator privillegies");
         }
     } catch (error) {
-        res.status(403).json({
-            message: "Invalid token"
-        });
+        throw new httpError.badRequest("Invalid token");
     }
 }
