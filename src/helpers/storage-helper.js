@@ -20,8 +20,11 @@ exports.uploadBlockBlob = async (containerName, { blobName, blobBuffer }) => {
         await blockBlobClient.upload(blobBuffer, blobBuffer.length);
 
         return blobName;
-    } catch (e) {
+    } catch (err) {
+        next(err);
+        /*
         console.error(`upload block blob failed: \n${e}`);
         return 'default-image.png';
+        */
     }
 }

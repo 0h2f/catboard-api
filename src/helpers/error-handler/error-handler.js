@@ -88,8 +88,15 @@ class ErrorHandler {
         });
     }
 
-    async logTrace(err) {
+    async logTrace(trace) {
         await logger.trace(
+            'Trace message from the error handler: \n',
+            trace
+        );
+    }
+
+    async logError(err) {
+        await logger.error(
             'Error message from the error handler: \n',
             err
         );
