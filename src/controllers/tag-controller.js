@@ -1,7 +1,6 @@
 const repository = require('../repositories/tag-repository');
-const authHelper = require('../helpers/auth-helper');
-const httpError = require('../helpers/error-handler/error-handler');
-const debug = require('debug')('nodeimageboard:tag-controller')
+const authHelper = require('../services/auth-service');
+const httpError = require('../services/error-handler/error-handler');
 
 exports.get = async (req, res, next) => {
     try {
@@ -9,8 +8,8 @@ exports.get = async (req, res, next) => {
         res.status(200).send(data);
     }
     catch (error) {
-        debug(error);
         next(error);
+        
     }
 }
 
@@ -20,7 +19,6 @@ exports.getByName = async (req, res, next) => {
         res.status(200).send(data);
 
     } catch (error) {
-        debug(error);
         next(error);
 
     }
@@ -32,7 +30,6 @@ exports.getByCategory = async (req, res, next) => {
         res.status(200).send(data);
 
     } catch (error) {
-        debug(error);
         next(error);
 
     }
@@ -44,7 +41,6 @@ exports.getById = async (req, res, next) => {
         res.status(200).send(data);
 
     } catch (error) {
-        debug(error);
         next(error);
 
     }
@@ -67,7 +63,6 @@ exports.post = async (req, res, next) => {
         });
 
     } catch (error) {
-        debug(error);
         next(error);
 
     }
@@ -76,7 +71,7 @@ exports.put = async (req, res, next) => {
     try {
         let accessToken = req.body.token || req.query.token || req.headers['x-access-token'];
 
-        let tagDocument = await repository.getById(req.params.id);
+        let tagDocument = await repository.getByName(req.params.name);
         let user = await authHelper.decodeAccessToken(accessToken);
         let isAuthor = await tagDocument.isAuthor(user.id);
     
@@ -105,7 +100,6 @@ exports.put = async (req, res, next) => {
         });
 
     } catch (error) {
-        debug(error);
         next(error);
 
     }
@@ -114,7 +108,7 @@ exports.put = async (req, res, next) => {
 exports.delete = async (req, res, next) => {
     try {
         let accessToken = req.body.token || req.query.token || req.headers['x-access-token'];
-        let tagDocument = await repository.getById(req.body.id);
+        let tagDocument = await repository.getByName(req.body.name);
         let user = await authHelper.decodeAccessToken(accessToken);
         let isAuthor = await tagDocument.isAuthor(user.id);
 
@@ -128,7 +122,6 @@ exports.delete = async (req, res, next) => {
         });
 
     } catch (error) {
-        debug(error);
         next(error);
 
     }

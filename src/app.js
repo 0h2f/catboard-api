@@ -2,13 +2,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const config = require('./config');
-const { errorHandler, httpStatusCode } = require('./helpers/error-handler/error-handler');
+const { errorHandler, httpStatusCode } = require('./services/error-handler/error-handler');
+const debug = require('debug')('nodeimageboard:app');
 
 const app = express();
 const router = express.Router();
 
-mongoose.set('strictQuery', true)
-mongoose.connect(config.connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.set('strictQuery', true);
+mongoose.connect(config.connectionString, {
+    useNewUrlParser: true, useUnifiedTopology: true
+});
 
 const userModel = require('./models/user-model');
 const postModel = require('./models/post-model');
@@ -41,7 +44,8 @@ app.use((err, req, res, next) => {
         errorHandler.handleError(err, res, next);
     }
     else {
-        errorHandler.logError(err);
+        //errorHandler.logError(err);
+        debug(err);
         res.status(httpStatusCode.INTERNAL_SERVER)
             .send({
                 message: "Internal server error"

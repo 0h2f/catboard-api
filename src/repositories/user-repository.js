@@ -34,3 +34,10 @@ exports.create = async (data) => {
     user.password = await user.hashPwd(data.password);
     await user.save();
 }
+
+exports.update = async function (id, data) {
+    await User
+        .findByIdAndUpdate(
+            id, data, { runValidators: true }
+        );
+}

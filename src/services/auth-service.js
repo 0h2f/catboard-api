@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config');
-const httpError = require('../helpers/error-handler/error-handler');
+const httpError = require('../services/error-handler/error-handler');
 
 exports.generateAccessToken = async (data) => {
     return jwt.sign(data, config.TOKEN_SECRET, { expiresIn: '1d' });

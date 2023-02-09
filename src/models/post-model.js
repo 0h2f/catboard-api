@@ -51,19 +51,6 @@ const schema = new Schema({
     }
 });
 
-/*TODO: a better way to serialize the post number field*/
-
-/*NOTE:
-i dont want to create a new table to just do that,
-even if this is the most correct method.
-
-this function is here more to be a placeholder than anything,
-because this method isnt reliable (breaks if any document is 
-deleted :] ). 
-
->stackoverflow.com/a/41690744
- */
-
 schema.pre('save', function (next) {
     let Postpre = this;
     AutoInc.findOneAndUpdate({id: 'postId'}, {$inc: {value: 1}}, (err, autoincId) => {

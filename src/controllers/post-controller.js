@@ -1,9 +1,8 @@
 const repository = require('../repositories/post-repository');
-const debug = require('debug')('nodeimageboard:post-controller');
 const uuid = require('uuid');
-const storageHelper = require('../helpers/storage-helper');
-const authHelper = require('../helpers/auth-helper');
-const httpError = require('../helpers/error-handler/error-handler');
+const storageHelper = require('../services/storage-service');
+const authHelper = require('../services/auth-service');
+const httpError = require('../services/error-handler/error-handler');
 
 exports.get = async (req, res, next) => {
     try {
@@ -12,8 +11,8 @@ exports.get = async (req, res, next) => {
 
     }
     catch (error) {
-        debug(error);
         next(error);
+
     }
 }
 
@@ -23,8 +22,8 @@ exports.getByNumber = async (req, res, next) => {
         res.status(200).send(data);
 
     } catch (error) {
-        debug(error);
         next(error);
+
     }
 }
 
@@ -34,8 +33,8 @@ exports.getByTag = async (req, res, next) => {
         res.status(200).send(data);
 
     } catch (error) {
-        debug(error);
         next(error);
+
     }
 }
 
@@ -45,8 +44,8 @@ exports.getById = async (req, res, next) => {
         res.status(200).send(data);
 
     } catch (error) {
-        debug(error);
         next(error);
+
     }
 }
 
@@ -79,8 +78,8 @@ exports.post = async (req, res, next) => {
         });
 
     } catch (error) {
-        debug(error);
         next(error);
+
     }
 }
 
@@ -88,7 +87,7 @@ exports.put = async (req, res, next) => {
     try {
         let accessToken = req.body.token || req.query.token || req.headers['x-access-token'];
 
-        let postDocument = await repository.getById(req.params.id);
+        let postDocument = await repository.getByNumber(req.params.number);
         let user = await authHelper.decodeAccessToken(accessToken);
         let isAuthor = await postDocument.isAuthor(user.id);
     
@@ -116,15 +115,15 @@ exports.put = async (req, res, next) => {
         });
 
     } catch (error) {
-        debug(error);
         next(error);
+
     }
 };
 
 exports.delete = async (req, res, next) => {
     try {
         let accessToken = req.body.token || req.query.token || req.headers['x-access-token'];
-        let postDocument = await repository.getById(req.body.id);
+        let postDocument = await repository.getByNumber(req.body.number);
         let user = await authHelper.decodeAccessToken(accessToken);
         let isAuthor = await postDocument.isAuthor(user.id);
     
@@ -138,7 +137,7 @@ exports.delete = async (req, res, next) => {
         });
 
     } catch (error) {
-        debug(error);
         next(error);
+
     }
 };

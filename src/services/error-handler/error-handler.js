@@ -1,5 +1,11 @@
 const { logger } = require("./logger");
 
+/*
+NOTE: Consider using an array of error messages to display 
+in frond end for users feedback. Or best than this, create
+other type of erros when the request response is an 200 
+but there are minor validation errors.
+*/
 class baseError extends Error {
 
     constructor(name, description, isOperational = false) {
@@ -70,6 +76,17 @@ class notFound extends httpError {
     }
 }
 
+class conflict extends httpError {
+    constructor(description, isOperational = true) {
+
+        super('CONFLICT', httpStatusCode.CONFLICT, description, isOperational);
+
+        Object.setPrototypeOf(this, new.target.prototype);
+
+        Error.captureStackTrace(this);
+    }
+}
+
 class internalServer extends httpError {
     constructor(description, isOperational = true) {
 
@@ -116,6 +133,7 @@ const httpStatusCode = {
     UNAUTHORIZED: 401, 
     FORBIDDEN: 403,
     NOT_FOUND: 404,
+    CONFLICT: 409,
     INTERNAL_SERVER: 500
 }
 Object.freeze(httpStatusCode);
@@ -128,6 +146,7 @@ module.exports = {
     unauthorized,
     forbidden,
     notFound,
+    conflict,
     internalServer,
     errorHandler,
     httpStatusCode
